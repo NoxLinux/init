@@ -5,7 +5,7 @@
 #include <utils/sysprep.h>
 
 int main(void) {
-  if (getpgid(1) >= 0) {
+  if (getpgid(1) >= 0 && getpid() != 1) {
     return 1;
   }
 
