@@ -1,26 +1,19 @@
-#include <dirent.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <utils/freeze.h>
-#include <utils/list_dir.h>
 
 int main(void) {
-  printf("hello world!\n");
+  printf("Welcome to \033[1;34mNox\033[0m!\n");
 
-  directory_listing listing = list_dir("/");
-
-  if (listing.num_files == -1) {
-    perror("failed to list /\n");
+  if (access("/bin/sh", F_OK) == -1) {
+    perror("/bin/sh not found, please install a shell!\n");
     freeze();
   }
 
-  printf("dirs: %d\nfiles: %d\n", listing.num_folders, listing.num_files);
-  for (int i = 0; i < (listing.num_files + listing.num_folders); i++) {
-    if (listing.entries[i]->d_type == DT_REG)
-      printf("%s\n", listing.entries[i]->d_name);
-    else if (listing.entries[i]->d_type == DT_DIR)
-      printf("%s/\n", listing.entries[i]->d_name);
-  }
+  for (;;) {
+    printf("Starting /bin/sh\n");
 
-  freeze();
-  return 0;
+    char *const argv[] = {"/bin/sh"};
+    execvp("/bin/sh", argv);
+  }
 }
