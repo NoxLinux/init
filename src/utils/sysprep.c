@@ -1,10 +1,12 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <utils/freeze.h>
+#include <utils/read_cmdline.h>
 #include <utils/sysprep.h>
 
 void sysprep() {
@@ -61,4 +63,41 @@ void sysprep() {
     perror("!!! Failed to mount '/run'");
     freeze();
   }
+
+  printf("... Reading kernel cmdline\n");
+  char *cmdline = read_cmdline();
+  if (cmdline == NULL)
+    return;
+
+  char *root_substr = strstr(cmdline, "root=");
+  if (root_substr == NULL) {
+    free(cmdline);
+    return;
+  }
+
+  size_t root_index = root_substr - cmdline + strlen("root=");
+  if (cmdline[root_index] == 0 || cmdline[root_index] == ' ') {
+    free(cmdline);
+    return;
+  }
+
+  char *root_disk = NULL;
+
+  int root_disk_len = 0;
+  for (size_t i = root_index; i < strlen(cmdline); i++)
+    if (cmdline[i] != 0 && cmdline[root_index] != ' ') {
+      root_disk_len++;
+      root_disk = realloc(root_disk, root_disk_len * sizeof(char));
+
+      if (root_disk == NULL) {
+        perror("!!! Failed to allocate memory");
+        freeze();
+      }
+
+      root_disk[root_disk_len - 1] = cmdline[i];
+    }
+
+  printf("root=%s\n", root_disk);
+  free(cmdline);
+  free(root_disk);
 }
