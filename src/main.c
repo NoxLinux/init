@@ -5,6 +5,10 @@
 #include <utils/sysprep.h>
 
 int main(void) {
+  if (getpgid(1) >= 0) {
+    return 1;
+  }
+
   printf("Welcome to \033[1;34mNox\033[0m!\n");
 
   printf("\n--- Stage 1 ---\n");
