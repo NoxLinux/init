@@ -22,7 +22,4 @@ void sysprep() {
 
   printf("... Mounting /run\n");
   ezmount("tmp", "/run", "tmpfs");
-
-  printf("... Reading kernel cmdline\n");
-  printf("root=%s\n", read_cmdline_arg("root"));
 }
