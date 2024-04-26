@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <utils/freeze.h>
 
@@ -10,10 +11,6 @@ int main(void) {
     freeze();
   }
 
-  for (;;) {
-    printf("Starting /bin/sh\n");
-
-    char *const argv[] = {"/bin/sh"};
-    execvp("/bin/sh", argv);
-  }
+  printf("Starting /bin/sh\n");
+  execl("/bin/sh", "/bin/sh", NULL);
 }
