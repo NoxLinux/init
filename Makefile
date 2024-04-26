@@ -34,5 +34,5 @@ rebuild: clean $(TARGET)
 
 .PHONY: format
 format:
-	@clang-format -i $(SRC) $(shell find include -type f -name "*.hpp")
+	@clang-format -style=llvm -i $(SRC) $(shell find include -type f -name "*.hpp")
 
