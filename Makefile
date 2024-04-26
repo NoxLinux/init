@@ -1,4 +1,4 @@
-CC := $(or $(shell echo $$CC),gcc)
+CC := $(or $(shell echo $$CC),clang)
 CFLAGS := -Wall -Wextra -O2 -Iinclude -static $(shell echo $$CFLAGS)
 LDFLAGS := $(shell echo $$LDFLAGS)
 
