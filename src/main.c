@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <utils/freeze.h>
+#include <utils/logger.h>
 #include <utils/sysprep.h>
 
 int main(void) {
@@ -15,11 +15,9 @@ int main(void) {
   sysprep();
 
   printf("\n--- Stage 2 ---\n");
-  if (access("/bin/sh", F_OK) == -1) {
-    perror("!!! /bin/sh not found, please install a shell!\n");
-    freeze();
-  }
+  if (access("/bin/sh", F_OK) == -1)
+    log_fatal("/bin/sh not found, please install a shell!");
 
-  printf("... Starting /bin/sh\n");
+  log_info("Starting /bin/sh");
   execl("/bin/sh", "/bin/sh", NULL);
 }
