@@ -1,25 +1,19 @@
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mount.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#include <stdbool.h>
 #include <utils/ezmount.h>
-#include <utils/freeze.h>
+#include <utils/logger.h>
 #include <utils/read_cmdline.h>
 #include <utils/sysprep.h>
 
 void sysprep() {
-  printf("... Mounting /proc\n");
-  ezmount("proc", "/proc", "proc");
+  log_info("Mounting /proc");
+  ezmount("proc", "/proc", "proc", true);
 
-  printf("... Mounting /sys\n");
-  ezmount("sys", "/sys", "sysfs");
+  log_info("Mounting /sys");
+  ezmount("sys", "/sys", "sysfs", true);
 
-  printf("... Mounting /tmp\n");
-  ezmount("tmp", "/tmp", "tmpfs");
+  log_info("Mounting /tmp");
+  ezmount("tmp", "/tmp", "tmpfs", true);
 
-  printf("... Mounting /run\n");
-  ezmount("tmp", "/run", "tmpfs");
+  log_info("Mounting /run");
+  ezmount("tmp", "/run", "tmpfs", true);
 }

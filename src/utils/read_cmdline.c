@@ -1,7 +1,8 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <utils/freeze.h>
+#include <utils/logger.h>
 #include <utils/read_cmdline.h>
 
 #define CMDLINE_SIZE 2048
@@ -9,24 +10,21 @@
 char *read_cmdline() {
   char *cmdline = (char *)malloc(CMDLINE_SIZE * sizeof(char));
 
-  if (cmdline == NULL) {
-    perror("!!! Failed to allocate memory");
-    freeze();
-  }
+  if (cmdline == NULL)
+    log_fatal_errno("Failed to allocate memory", errno);
 
-  for (int i = 0; i < CMDLINE_SIZE; i++) {
+  for (int i = 0; i < CMDLINE_SIZE; i++)
     cmdline[i] = 0;
-  }
 
   FILE *cmdline_file = fopen("/proc/cmdline", "r");
   if (cmdline_file == NULL) {
-    perror("!!! Failed to open '/proc/cmdline'");
+    log_errno("Failed to open '/proc/cmdline'", errno);
     free(cmdline);
     return NULL;
   }
 
   if (fgets(cmdline, CMDLINE_SIZE, cmdline_file) == NULL) {
-    perror("!!! Failed to read '/proc/cmdline'");
+    log_errno("Failed to read '/proc/cmdline'", errno);
     fclose(cmdline_file);
     free(cmdline);
     return NULL;
@@ -64,10 +62,8 @@ char *read_cmdline_arg(char *argname) {
       arg_len++;
       arg = realloc(arg, arg_len * sizeof(char));
 
-      if (arg == NULL) {
-        perror("!!! Failed to allocate memory");
-        freeze();
-      }
+      if (arg == NULL)
+        log_fatal_errno("Failed to allocate memory", errno);
 
       arg[arg_len - 1] = cmdline[i];
     }
