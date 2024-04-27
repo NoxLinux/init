@@ -1,13 +1,11 @@
+#include <nox/logger.h>
+#include <nox/sysprep.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <nox/logger.h>
-#include <nox/sysprep.h>
 
-int main(void)
-{
-  if (getpgid(1) >= 0 && getpid() != 1)
-  {
+int main(void) {
+  if (getpgid(1) >= 0 && getpid() != 1) {
     return 1;
   }
 
@@ -17,9 +15,9 @@ int main(void)
   sysprep();
 
   printf("\n--- Stage 2 ---\n");
-  if (access("/bin/sh", F_OK) == -1)
-    log_fatal("/bin/sh not found, please install a shell!");
+  if (access("/bin/ash", F_OK) == -1)
+    log_fatal("/bin/ash not found, please install a shell!");
 
-  log_info("Starting /bin/sh");
-  execl("/bin/sh", "/bin/sh", NULL);
+  log_info("Starting /bin/ash");
+  execl("/bin/ash", "/bin/ash", NULL);
 }

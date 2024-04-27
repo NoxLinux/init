@@ -1,14 +1,13 @@
 #include <errno.h>
+#include <nox/logger.h>
+#include <nox/read_cmdline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <nox/logger.h>
-#include <nox/read_cmdline.h>
 
 #define CMDLINE_SIZE 2048
 
-char *read_cmdline()
-{
+char *read_cmdline() {
   char *cmdline = (char *)malloc(CMDLINE_SIZE * sizeof(char));
 
   if (cmdline == NULL)
@@ -18,15 +17,13 @@ char *read_cmdline()
     cmdline[i] = 0;
 
   FILE *cmdline_file = fopen("/proc/cmdline", "r");
-  if (cmdline_file == NULL)
-  {
+  if (cmdline_file == NULL) {
     log_errno("Failed to open '/proc/cmdline'", errno);
     free(cmdline);
     return NULL;
   }
 
-  if (fgets(cmdline, CMDLINE_SIZE, cmdline_file) == NULL)
-  {
+  if (fgets(cmdline, CMDLINE_SIZE, cmdline_file) == NULL) {
     log_errno("Failed to read '/proc/cmdline'", errno);
     fclose(cmdline_file);
     free(cmdline);
@@ -37,8 +34,7 @@ char *read_cmdline()
   return cmdline;
 }
 
-char *read_cmdline_arg(char *argname)
-{
+char *read_cmdline_arg(char *argname) {
   char *cmdline = read_cmdline();
   if (cmdline == NULL)
     return NULL;
@@ -47,15 +43,13 @@ char *read_cmdline_arg(char *argname)
   snprintf(arg_equalsign_str, sizeof(arg_equalsign_str), "%s=", argname);
 
   char *root_substr = strstr(cmdline, arg_equalsign_str);
-  if (root_substr == NULL)
-  {
+  if (root_substr == NULL) {
     free(cmdline);
     return NULL;
   }
 
   size_t arg_index = root_substr - cmdline + strlen(arg_equalsign_str);
-  if (cmdline[arg_index] == 0 || cmdline[arg_index] == ' ')
-  {
+  if (cmdline[arg_index] == 0 || cmdline[arg_index] == ' ') {
     free(cmdline);
     return NULL;
   }
@@ -64,8 +58,7 @@ char *read_cmdline_arg(char *argname)
 
   int arg_len = 0;
   for (size_t i = arg_index; i < strlen(cmdline); i++)
-    if (cmdline[i] != 0 && cmdline[arg_index] != ' ')
-    {
+    if (cmdline[i] != 0 && cmdline[arg_index] != ' ') {
       arg_len++;
       arg = realloc(arg, arg_len * sizeof(char));
 

@@ -4,5 +4,6 @@
 
 void ezmount(char *special_file, char *mountpoint, char *fs_type,
              bool is_critical);
+bool ez_ismounted(char *mountpoint);
 
 #endif
