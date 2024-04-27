@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <utils/logger.h>
-#include <utils/sysprep.h>
+#include <nox/logger.h>
+#include <nox/sysprep.h>
 
-int main(void) {
-  if (getpgid(1) >= 0 && getpid() != 1) {
+int main(void)
+{
+  if (getpgid(1) >= 0 && getpid() != 1)
+  {
     return 1;
   }
 

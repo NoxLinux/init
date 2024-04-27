@@ -1,23 +1,26 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
-#include <utils/list_dir.h>
+#include <nox/list_dir.h>
 
-directory_listing list_dir(const char *path) {
+directory_listing list_dir(const char *path)
+{
   directory_listing result;
   result.num_files = 0;
   result.num_folders = 0;
   result.entries = NULL;
 
   DIR *dir = opendir(path);
-  if (dir == NULL) {
+  if (dir == NULL)
+  {
     result.num_files = -1;
     result.num_folders = -1;
     return result;
   }
 
   struct dirent *entry;
-  while ((entry = readdir(dir)) != NULL) {
+  while ((entry = readdir(dir)) != NULL)
+  {
     if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
       continue;
 

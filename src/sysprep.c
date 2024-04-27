@@ -1,8 +1,13 @@
+#include <nox/ezmount.h>
+#include <nox/logger.h>
+#include <nox/read_cmdline.h>
+#include <nox/sysprep.h>
 #include <stdbool.h>
-#include <utils/ezmount.h>
-#include <utils/logger.h>
-#include <utils/read_cmdline.h>
-#include <utils/sysprep.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
 void sysprep() {
   log_info("Mounting /proc");

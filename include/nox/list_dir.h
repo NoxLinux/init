@@ -1,5 +1,5 @@
-#ifndef UTILS_LIST_DIR_H
-#define UTILS_LIST_DIR_H
+#ifndef LIST_DIR_H
+#define LIST_DIR_H
 
 typedef struct {
   int num_files;

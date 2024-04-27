@@ -1,5 +1,5 @@
-#ifndef UTILS_LOGGER_H
-#define UTILS_LOGGER_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 void log_info(char *msg);
 void log_warn(char *msg);
