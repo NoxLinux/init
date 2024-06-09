@@ -9,7 +9,7 @@ int main(void) {
     return 1;
   }
 
-  printf("Welcome to \033[1;34mNox\033[0m!\n");
+  printf("\033[H\033[JWelcome to \033[1;34mNox\033[0m!\n");
 
   printf("\n--- Stage 1 ---\n");
   sysprep();
