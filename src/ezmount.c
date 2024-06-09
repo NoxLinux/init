@@ -11,13 +11,13 @@
 void ez_mount(char *special_file, char *mountpoint, char *fs_type,
               bool is_critical) {
   int mkdirerror = mkdir(mountpoint, 0555);
-  if (mkdirerror != 0 && (mkdirerror != -1 || mkdirerror != EEXIST)) {
+  if (mkdirerror != 0 && errno != EEXIST) {
     char error[strlen("Failed to create ''") + strlen(mountpoint) +
                5]; // 5, just in case
     snprintf(error, sizeof(error), "Failed to create '%s'", mountpoint);
 
     if (is_critical > 0) {
-      log_fatal(error);
+      log_fatal_errno(error, errno);
     }
   }
 
@@ -27,7 +27,7 @@ void ez_mount(char *special_file, char *mountpoint, char *fs_type,
     snprintf(error, sizeof(error), "Failed to mount '%s'", mountpoint);
 
     if (is_critical > 0) {
-      log_fatal(error);
+      log_fatal_errno(error, errno);
     }
   }
 }

@@ -4,10 +4,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-int main(void)
-{
-  if (getpgid(1) >= 0 && getpid() != 1)
-  {
+int main(void) {
+  if (getpgid(1) >= 0 && getpid() != 1) {
     return 1;
   }
 
