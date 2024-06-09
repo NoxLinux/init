@@ -13,8 +13,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-void sysprep()
-{
+void sysprep() {
   log_info("Mounting /proc");
   ez_mount("proc", "/proc", "proc", true);
 
@@ -32,10 +31,8 @@ void sysprep()
   if (root_fs == NULL)
     return;
 
-  while (true)
-  {
-    if (access("/new_root", F_OK) != -1 && ez_ismounted("new_root"))
-    {
+  while (true) {
+    if (access("/new_root", F_OK) != -1 && ez_ismounted("new_root")) {
       log_info("/new_root was already mounted, continuing");
       break;
     }
@@ -44,8 +41,7 @@ void sysprep()
     if (mkdirerror != 0 && (mkdirerror != -1 || mkdirerror != EEXIST))
       log_fatal_errno("Failed to mkdir /new_root", errno);
 
-    if (strlen(root_fs) > 5 && strncmp(root_fs, "UUID=", 5) == 0)
-    {
+    if (strlen(root_fs) > 5 && strncmp(root_fs, "UUID=", 5) == 0) {
       char root_fs_uuid[strlen(root_fs)];
 
       for (size_t i = 0; i < strlen(root_fs); i++)
@@ -61,16 +57,14 @@ void sysprep()
       snprintf(waiting_log_msg, sizeof(waiting_log_msg), "Waiting for %s",
                root_fs_uuid_path);
 
-      for (int i = 0; i < 5; i++)
-      {
+      for (int i = 0; i < 5; i++) {
         if (access(root_fs_uuid_path, F_OK) != -1)
           break;
         log_warn(waiting_log_msg);
         sleep(2);
       }
 
-      if (access(root_fs_uuid_path, F_OK) == -1)
-      {
+      if (access(root_fs_uuid_path, F_OK) == -1) {
         if (access("/bin/ash", F_OK) == -1)
           log_fatal("Can't mount root, no emergency shell found.");
 
