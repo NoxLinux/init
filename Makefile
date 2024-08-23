@@ -1,5 +1,5 @@
 CC := $(or $(shell echo $$CC),clang)
-CFLAGS := -Wall -Wextra -O2 -Iinclude -static $(shell echo $$CFLAGS)
+CFLAGS := -Wall -Wextra -O2 -flto=thin -Iinclude -static $(shell echo $$CFLAGS)
 LDFLAGS := $(shell echo $$LDFLAGS)
 
 ifeq ($(shell echo $$STRIP), 1)
